@@ -201,6 +201,21 @@ security.protocol: SASL_PLAINTEXT
 sasl.mechanism:    PLAIN
 sasl.jaas.config:  org.apache.kafka.common.security.plain.PlainLoginModule required username="client" password="client-secret";
 ```
+## Run a dual auth Kafka cluster (PLAINTEXT (unauthenticated) and one of the authenticated listeners: Kerberos or SSL)
+first generate the certificates
+```
+keytool -keystore kafka1.keystore.jks -alias kafka1 -validity 365 -genkey -keyalg RSA
+keytool -keystore kafka1.truststore.jks -alias CARoot -import -file ca-cert
+```
+
+Use the `docker-compose-dual-auth.yml` configuration to run a dual authenticated cluster:
+
+```
+docker compose -f docker-compose-dual-auth.yml up
+```
+Bootstrap configuration is the same as the simple cluster however clients must authenticate to connect. 
+
+Authentication configuration is specified in [resources/docker/kafka_jaas.conf](resources/docker/kafka_jaas.conf).
 
 ## License
 
