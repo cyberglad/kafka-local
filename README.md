@@ -205,7 +205,8 @@ sasl.jaas.config:  org.apache.kafka.common.security.plain.PlainLoginModule requi
 first generate the certificates
 ```
 keytool -keystore kafka1.keystore.jks -alias kafka1 -validity 365 -genkey -keyalg RSA
-keytool -keystore kafka1.truststore.jks -alias CARoot -import -file ca-cert
+keytool -export -keystore kafka1.keystore.jks -alias kafka1 -file kafka1.crt
+keytool -keystore kafka1.truststore.jks -alias CARoot -import -file kafka1.crt
 ```
 
 Use the `docker-compose-dual-auth.yml` configuration to run a dual authenticated cluster:
